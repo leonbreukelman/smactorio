@@ -1,5 +1,15 @@
 {
-  "name": "Smactorio Dev Container",
-  "image": "mcr.microsoft.com/devcontainers/universal:latest",
+  "name": "AI Software Factory (Python 3.12 + uv + DSPy)",
+  "dockerFile": "Dockerfile",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "tamasfe.even-better-toml"
+      ]
+    }
+  },
+  "remoteUser": "vscode",
   "postCreateCommand": "bash .devcontainer/postcreatecommand.sh"
 }
