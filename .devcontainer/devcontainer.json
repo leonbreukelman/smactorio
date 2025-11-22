@@ -1,0 +1,5 @@
+{
+  "name": "Smactorio Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/universal:latest",
+  "postCreateCommand": "bash .devcontainer/postcreatecommand.sh"
+}
