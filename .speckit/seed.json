@@ -1,0 +1,19 @@
+{
+  "project_metadata": {
+    "name": "example-project",
+    "version": "0.1.0",
+    "description": "A template project for the AI Software Factory."
+  },
+  "governance": {
+    "strict_mode": true,
+    "test_coverage_threshold": 0.85,
+    "style_guide": "google"
+  },
+  "tech_stack": {
+    "language": "python",
+    "framework": "fastapi",
+    "database": "chromadb",
+    "packaging": "uv"
+  },
+  "intent": "Create a production-ready API. Replace this with your specific project intent."
+}
