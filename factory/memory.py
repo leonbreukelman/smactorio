@@ -146,9 +146,10 @@ def retrieve_context(
 
     context_items = []
     if results["documents"] and results["metadatas"]:
-        for doc, metadata in zip(
-            results["documents"][0], results["metadatas"][0], strict=False
-        ):
+        docs = results["documents"][0]
+        metas = results["metadatas"][0]
+        # ChromaDB guarantees these have the same length, use strict=True for safety
+        for doc, metadata in zip(docs, metas, strict=True):
             context_items.append({"document": doc, "metadata": metadata})
 
     return context_items
