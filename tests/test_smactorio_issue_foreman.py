@@ -1491,30 +1491,11 @@ class SmactorioIssueForemanTest(unittest.TestCase):
         self.assertIn("flock", service)
         self.assertIn("OnCalendar=*:0/15", timer)
 
-    def test_hermes_lane_service_files_are_host_gated_and_share_lock(self) -> None:
-        system_service = (ROOT / "infra" / "systemd" / "system" / "smactorio-hermes-fork.service").read_text(encoding="utf-8")
-        system_timer = (ROOT / "infra" / "systemd" / "system" / "smactorio-hermes-fork.timer").read_text(encoding="utf-8")
-        user_service = (ROOT / "infra" / "systemd" / "user" / "hermes-fork-sync-check.service").read_text(encoding="utf-8")
-        user_timer = (ROOT / "infra" / "systemd" / "user" / "hermes-fork-sync-check.timer").read_text(encoding="utf-8")
-
-        for unit in (system_service, system_timer, user_service, user_timer):
-            self.assertIn("ConditionHost=rtx3070", unit)
-        for service in (system_service, user_service):
-            self.assertIn("SMACTORIO_RUNTIME_ATTEST=rtx3070-smactorio-systemd", service)
-            self.assertIn("EnvironmentFile=/home/leonb/.config/smactorio/env", service)
-            self.assertIn("/home/leonb/.local/state/smactorio/hermes-fork.lock", service)
-            self.assertIn("ProtectHome=read-only", service)
-            self.assertIn("InaccessiblePaths=-/home/leonb/.ssh", service)
-        self.assertIn("/usr/bin/flock -n /home/leonb/.local/state/smactorio/hermes-fork.lock", system_service)
-        self.assertIn("--repo leonbreukelman/hermes-agent", system_service)
-        self.assertIn("--repo-root /home/leonb/.local/share/smactorio/repos/hermes-agent", system_service)
-        self.assertIn("/usr/bin/mkdir -p /home/leonb/.local/state/smactorio /home/leonb/.local/share/smactorio/repos ", system_service)
-        self.assertNotIn("mkdir -p /home/leonb/.local/share/smactorio/repos/hermes-agent", system_service)
-        self.assertIn("hermes-fork.sqlite", system_service)
-        self.assertIn("hermes_fork_sync_check.py --json --lock-file /home/leonb/.local/state/smactorio/hermes-fork.lock", user_service)
-        self.assertNotIn("/usr/bin/flock", user_service)
-        self.assertIn("/home/leonb/.local/share/smactorio/fork-sync", user_service)
-        self.assertIn("OnCalendar=hourly", user_timer)
+    def test_retired_hermes_lane_service_files_are_not_shipped(self) -> None:
+        self.assertFalse((ROOT / "infra" / "systemd" / "system" / "smactorio-hermes-fork.service").exists())
+        self.assertFalse((ROOT / "infra" / "systemd" / "system" / "smactorio-hermes-fork.timer").exists())
+        self.assertFalse((ROOT / "infra" / "systemd" / "user" / "hermes-fork-sync-check.service").exists())
+        self.assertFalse((ROOT / "infra" / "systemd" / "user" / "hermes-fork-sync-check.timer").exists())
 
 
     def test_runtime_environment_rejects_noncanonical_worker_identity(self) -> None:
@@ -1636,8 +1617,7 @@ class SmactorioIssueForemanTest(unittest.TestCase):
 
         self.assertIn("outside allowed roots", "\n".join(errors))
 
-    def test_hermes_policy_rejects_workflow_packaging_cache_and_token_paths(self) -> None:
-        import smactorio_issue_foreman as foreman
+    def test_retired_hermes_policy_has_no_change_scope(self) -> None:
         import smactorio_policy
 
         issue = {
@@ -1645,42 +1625,27 @@ class SmactorioIssueForemanTest(unittest.TestCase):
         }
         policy = smactorio_policy.policy_for_issue("leonbreukelman/hermes-agent", issue)
 
-        with self.assertRaisesRegex(foreman.SmactorioError, "changed paths violate"):
-            foreman.validate_changed_paths_for_policy(
-                [
-                    ".github/workflows/ci.yml",
-                    ".github/dependabot.yml",
-                    ".github/dependabot/updates.yml",
-                    "pyproject.toml",
-                    "conftest.py",
-                    "tests/unit/conftest.py",
-                    "cache/runtime.log",
-                    "agent/api_token_fixture.py",
-                ],
-                policy,
-            )
-        foreman.validate_changed_paths_for_policy(["agent/provider.py", "tests/test_provider.py"], policy)
-        foreman.validate_changed_paths_for_policy([".smactorio/verification/issue-9.md"], policy)
-        with self.assertRaisesRegex(foreman.SmactorioError, "no repository policy prefixes"):
-            foreman.validate_changed_paths_for_policy(["agent/provider.py"], smactorio_policy.policy_for_repo("leonbreukelman/hermes-agent"))
+        self.assertEqual(frozenset(), policy.eligible_states)
+        self.assertEqual((), policy.allowed_change_prefixes)
+        self.assertEqual((), policy.verification_artifact_prefixes)
 
-    def test_write_verification_artifact_uses_policy_prefix(self) -> None:
+    def test_write_verification_artifact_uses_signal_hub_policy_prefix(self) -> None:
         import smactorio_issue_foreman as foreman
         import smactorio_policy
 
         with tempfile.TemporaryDirectory() as tmp:
             worktree = Path(tmp)
-            policy = smactorio_policy.policy_for_repo("leonbreukelman/hermes-agent")
+            policy = smactorio_policy.policy_for_repo("leonbreukelman/rtx3070-workshop-ops")
             rel = foreman.write_verification_artifact(
                 worktree,
-                issue={"number": 9, "title": "Hermes sync", "url": "https://example.test/9"},
+                issue={"number": 9, "title": "Signal Hub work", "url": "https://example.test/9"},
                 pr_url=None,
                 checks=["ok"],
                 rid="run123",
                 policy=policy,
             )
 
-        self.assertTrue(str(rel).startswith(".smactorio/verification/"), rel)
+        self.assertTrue(str(rel).startswith("signal-hub/docs/verification/"), rel)
 
     def test_worker_material_change_rejects_verification_only_commits(self) -> None:
         import smactorio_issue_foreman as foreman

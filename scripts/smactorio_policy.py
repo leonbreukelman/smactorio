@@ -7,86 +7,16 @@ claimed autonomously and what labels mean terminal/blocked state.
 """
 from __future__ import annotations
 
-import json
-import re
 from dataclasses import dataclass, field
 from typing import Iterable
 
-
-HERMES_FORK_SYNC_MARKER_RE = re.compile(r"<!--\s*smactorio:hermes-fork-sync\s+(?P<payload>\{.*?\})\s*-->", re.DOTALL)
-
 SIGNAL_HUB_REPO = "leonbreukelman/rtx3070-workshop-ops"
-HERMES_AGENT_REPO = "leonbreukelman/hermes-agent"
 
 SIGNAL_HUB_ALLOWED_CHANGE_PREFIXES = ("signal-hub/", ".github/workflows/")
 SIGNAL_HUB_SECRET_SCAN_PATHS = (".github/workflows", "signal-hub")
 SIGNAL_HUB_VERIFICATION_TEST_COMMANDS = (("python3", "-m", "unittest", "discover", "-s", "tests", "-q"),)
 SIGNAL_HUB_VERIFICATION_ARTIFACT_PREFIXES = ("signal-hub/docs/verification/",)
 SIGNAL_HUB_COMMIT_PATHSPECS = ("signal-hub", ".github/workflows")
-
-HERMES_BASE_ALLOWED_CHANGE_PREFIXES = (
-    "agent/",
-    "tools/",
-    "gateway/",
-    "hermes_cli/",
-    "plugins/",
-    "skills/",
-    "optional-skills/",
-    "tests/",
-    "scripts/",
-    "website/",
-    "ui-tui/",
-    "tui_gateway/",
-    "acp_adapter/",
-    "cron/",
-    "docs/",
-    "run_agent.py",
-    "model_tools.py",
-    "toolsets.py",
-    "cli.py",
-    "hermes_state.py",
-    "hermes_constants.py",
-    "hermes_logging.py",
-    "batch_runner.py",
-)
-HERMES_FORBIDDEN_CHANGE_PATHS = (
-    "pyproject.toml",
-    "setup.py",
-    "setup.cfg",
-    "conftest.py",
-    "tests/conftest.py",
-    ".github/dependabot.yml",
-    ".github/dependabot.yaml",
-)
-HERMES_FORBIDDEN_CHANGE_PREFIXES = (
-    ".github/workflows/",
-    ".github/actions/",
-    ".github/dependabot/",
-    ".hermes/",
-    ".venv/",
-    "venv/",
-    "node_modules/",
-    "dist/",
-    "build/",
-    "logs/",
-    "runtime/",
-    "cache/",
-    ".cache/",
-    ".pytest_cache/",
-    ".mypy_cache/",
-    ".ruff_cache/",
-)
-HERMES_VERIFICATION_TEST_COMMANDS = (
-    (
-        "python3",
-        "-m",
-        "pytest",
-        "tests/hermes_cli/test_cmd_update.py",
-        "tests/hermes_cli/test_update_check.py",
-        "tests/cli/test_update_command.py",
-        "-q",
-    ),
-)
 
 
 @dataclass(frozen=True)
@@ -201,59 +131,6 @@ def _normalize_repo(repo: str) -> str:
     return (repo or "").strip().lower().removeprefix("https://github.com/").removesuffix(".git")
 
 
-def parse_hermes_fork_sync_marker(body: str | None) -> dict[str, object] | None:
-    """Parse the hidden fork-sync marker embedded in SmactorIO issue bodies."""
-    for match in HERMES_FORK_SYNC_MARKER_RE.finditer(body or ""):
-        try:
-            payload = json.loads(match.group("payload"))
-        except json.JSONDecodeError:
-            continue
-        if isinstance(payload, dict) and payload.get("lane") == "hermes-upstream-sync":
-            return payload
-    return None
-
-
-def _safe_marker_paths(payload: dict[str, object] | None) -> tuple[str, ...]:
-    if not payload:
-        return ()
-    raw_paths = payload.get("conflict_files")
-    if not isinstance(raw_paths, list):
-        return ()
-    safe: list[str] = []
-    for raw in raw_paths:
-        path = str(raw or "").replace("\\", "/").strip()
-        if not path or path.startswith("/") or path.startswith("../") or "/../" in path or "://" in path:
-            continue
-        if path not in safe:
-            safe.append(path)
-    return tuple(safe)
-
-
-def hermes_policy(*, marker_payload: dict[str, object] | None = None) -> SmactorioPolicy:
-    marker_paths = _safe_marker_paths(marker_payload)
-    # The Hermes upstream-sync lane is intentionally narrow: after the issue is
-    # loaded, only the conflict files emitted by the checker may be touched. A
-    # clean merge that requires a merge commit but reports no conflict files will
-    # therefore block for human review instead of granting broad source access.
-    allowed = marker_paths
-    return SmactorioPolicy(
-        allowed_hermes_roots=("/home/leonb/hermes/", "/home/leonb/projects/hermes-agent/"),
-        allowed_change_prefixes=allowed,
-        forbidden_change_paths=HERMES_FORBIDDEN_CHANGE_PATHS,
-        forbidden_change_prefixes=HERMES_FORBIDDEN_CHANGE_PREFIXES,
-        secret_scan_paths=(),
-        secret_scan_changed_paths_only=True,
-        verification_test_commands=HERMES_VERIFICATION_TEST_COMMANDS,
-        verification_test_cwd=".",
-        verification_artifact_prefixes=(".smactorio/verification/",),
-        commit_pathspecs=(".",),
-        discard_verification_side_effect_pathspecs=(".",),
-        safe_worker_generated_side_effect_prefixes=(),
-        trusted_preflight_files=("scripts/check_path_scope.py", "scripts/scan_for_secrets.py"),
-        trusted_preflight_files_root="signal-hub",
-    )
-
-
 def fail_closed_policy() -> SmactorioPolicy:
     """Policy for unsupported repositories: claim nothing and mutate nothing."""
     return SmactorioPolicy(
@@ -285,14 +162,10 @@ def policy_for_repo(repo: str) -> SmactorioPolicy:
     normalized = _normalize_repo(repo)
     if normalized == SIGNAL_HUB_REPO:
         return default_policy()
-    if normalized == HERMES_AGENT_REPO:
-        return hermes_policy()
     return fail_closed_policy()
 
 
 def policy_for_issue(repo: str, issue: dict) -> SmactorioPolicy:
-    if _normalize_repo(repo) == HERMES_AGENT_REPO:
-        return hermes_policy(marker_payload=parse_hermes_fork_sync_marker(str(issue.get("body") or "")))
     return policy_for_repo(repo)
 
 

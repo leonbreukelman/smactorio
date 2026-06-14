@@ -5,14 +5,13 @@ SmactorIO is Leon's bounded-autonomy GitHub issue runtime. It was extracted from
 ## What is in this repo
 
 - `scripts/smactorio_issue_foreman.py` — issue claim, worker launch, verification, PR, merge, and issue-completion lifecycle.
-- `scripts/smactorio_policy.py` — repo-specific safety policy for the rtx3070 workshop lane and the Hermes fork-sync lane.
-- `scripts/hermes_fork_sync_check.py` — publishes low-risk Hermes upstream sync tickets for SmactorIO.
+- `scripts/smactorio_policy.py` — repo-specific safety policy for the rtx3070 workshop lane; unsupported repositories fail closed.
 - `scripts/check_path_scope.py` and `scripts/scan_for_secrets.py` — trusted guardrails used before worker changes are accepted.
 - `scripts/page_shell.py` and `pages.json` — local shell/manifest support for the extracted SmactorIO generated pages.
 - `infra/systemd/` — rtx3070 service/timer units updated to run from `/home/leonb/projects/smactorio`.
 - `docs/`, `public/`, `data/`, `config/` — extracted SmactorIO specs, plans, evidence, generated pages, and runtime configuration fixtures.
 
-The default target repo remains `leonbreukelman/rtx3070-workshop-ops`; the runtime checkout is now separate.
+The default target repo remains `leonbreukelman/rtx3070-workshop-ops`; the runtime checkout is now separate. The former Hermes fork-sync lane has been retired, so SmactorIO no longer publishes or processes `leonbreukelman/hermes-agent` fork-sync tickets.
 
 ## Local verification
 

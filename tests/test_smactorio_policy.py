@@ -55,7 +55,7 @@ class SmactorioResearchSafetyPolicyTest(unittest.TestCase):
         self.assertEqual([], smactorio_policy.issue_ineligibility_reasons(issue))
         self.assertEqual([issue], smactorio_policy.filter_eligible([issue]))
 
-    def test_hermes_repo_policy_is_repo_specific_and_unknown_repos_fail_closed(self) -> None:
+    def test_hermes_repo_is_retired_and_fail_closed_like_unknown_repos(self) -> None:
         import smactorio_policy
 
         signal_hub = smactorio_policy.policy_for_repo("leonbreukelman/rtx3070-workshop-ops")
@@ -63,17 +63,17 @@ class SmactorioResearchSafetyPolicyTest(unittest.TestCase):
         unknown = smactorio_policy.policy_for_repo("someone/else")
 
         self.assertEqual(("signal-hub/", ".github/workflows/"), signal_hub.allowed_change_prefixes)
-        self.assertEqual((".smactorio/verification/",), hermes.verification_artifact_prefixes)
+        self.assertEqual(frozenset(), hermes.eligible_states)
+        self.assertEqual(frozenset({"smactorio:unsupported-repo"}), hermes.required_labels)
         self.assertEqual((), hermes.allowed_change_prefixes)
-        self.assertTrue(hermes.secret_scan_changed_paths_only)
-        self.assertIn("/home/leonb/hermes/", hermes.allowed_hermes_roots)
-        self.assertIn("xai", hermes.allowed_worker_providers)
+        self.assertEqual((), hermes.verification_artifact_prefixes)
         self.assertEqual(frozenset(), unknown.eligible_states)
         self.assertEqual((), unknown.allowed_change_prefixes)
         unsupported_issue = {"state": "OPEN", "labels": [{"name": "smactorio"}, {"name": "autonomy:ready"}, {"name": "risk:low"}]}
         self.assertIn("missing required labels", "\n".join(smactorio_policy.issue_ineligibility_reasons(unsupported_issue, unknown)))
+        self.assertIn("missing required labels", "\n".join(smactorio_policy.issue_ineligibility_reasons(unsupported_issue, hermes)))
 
-    def test_hermes_issue_marker_adds_conflict_files_to_policy_scope(self) -> None:
+    def test_retired_hermes_issue_marker_does_not_reopen_policy_scope(self) -> None:
         import smactorio_policy
 
         issue = {
@@ -81,14 +81,9 @@ class SmactorioResearchSafetyPolicyTest(unittest.TestCase):
         }
         policy = smactorio_policy.policy_for_issue("leonbreukelman/hermes-agent", issue)
 
-        self.assertEqual(("agent/foo.py",), policy.allowed_change_prefixes)
-        self.assertNotIn("../bad", policy.allowed_change_prefixes)
-        self.assertNotIn("/tmp/leak", policy.allowed_change_prefixes)
-        self.assertNotIn("tests/", policy.allowed_change_prefixes)
-        self.assertIn(".github/workflows/", policy.forbidden_change_prefixes)
-        self.assertIn(".github/dependabot.yml", policy.forbidden_change_paths)
-        self.assertIn(".github/dependabot/", policy.forbidden_change_prefixes)
-        self.assertIn("pyproject.toml", policy.forbidden_change_paths)
+        self.assertEqual(frozenset(), policy.eligible_states)
+        self.assertEqual((), policy.allowed_change_prefixes)
+        self.assertEqual((), policy.verification_artifact_prefixes)
 
 
 if __name__ == "__main__":
