@@ -1,0 +1,9 @@
+[project]
+name = "smactorio"
+version = "0.1.0"
+description = "Standalone bounded-autonomy GitHub issue runtime extracted from rtx3070 workshop ops."
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["scripts"]

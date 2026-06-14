@@ -1,0 +1,12 @@
+[Unit]
+Description=Run SmactorIO GitHub Issue Runtime every 15 minutes
+
+[Timer]
+OnBootSec=2min
+OnCalendar=*:0/15
+RandomizedDelaySec=90s
+Persistent=true
+Unit=smactorio.service
+
+[Install]
+WantedBy=timers.target

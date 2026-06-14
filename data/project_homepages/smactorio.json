@@ -1,0 +1,209 @@
+{
+  "current_step": {
+    "action": "Defined the priority gate, GitHub-backed lifecycle, reviewed spec, adversarially reviewed plan v2, and updated the cockpit/roadmap direction.",
+    "check": "Generated pages must expose Priority gate, GitHub-backed loop, Rollback through git revert, Development loop, and Operator dry run markers.",
+    "input": "Leon clarified that SmactorIO needs a roadmap-consuming autonomous development loop with explicit prioritization and GitHub-backed rollback.",
+    "next": "Package safe Signal Hub/SmactorIO source into the private GitHub repo on branch smactor/bootstrap-github-backed-autonomy and open a PR.",
+    "output": "SmactorIO now has a documented candidate-selection/development loop: classify -> normalize -> prioritize -> select -> spec/review -> plan/review -> implement -> test -> operator dry run -> proof.",
+    "state": "FULL_AUTONOMY_SPEC_PLAN_REVIEWED"
+  },
+  "current_work": [
+    "Bootstrap safe SmactorIO/Signal Hub source into the private GitHub repo without runtime state.",
+    "Use the priority gate before any Candidate enters the development loop.",
+    "Keep the cockpit simple; put detailed spec/plan/review artifacts in repo docs."
+  ],
+  "decisions": [
+    "SmactorIO is the umbrella autonomous project operating system name for now.",
+    "Signal Hub remains the private LAN dashboard/control surface inside SmactorIO.",
+    "The homepage is the cockpit; the roadmap, contract, and journal hang from it.",
+    "The homepage must stay neat and link to details instead of becoming a wall of text.",
+    "The basic automation loop comes before advanced self-improvement machinery.",
+    "Prioritization is a standalone governed step between normalization and candidate selection.",
+    "GitHub Issues/branches/PRs become the canonical backlog/version-control path; tarballs are not normal rollback.",
+    "The first GitHub-backed Candidate is bootstrap-github-backed-smactorio-source-001.",
+    "Direct main pushes are not allowed for the bootstrap autonomy slice; use branch + PR."
+  ],
+  "description": "SmactorIO is the simple operating layer for Leon's projects: set a clear goal, move through one visible step card at a time, check the proof, and keep the history in one place.",
+  "improvement_os": {
+    "checks": [
+      "Priority gate marker rendered",
+      "GitHub-backed loop marker rendered",
+      "Rollback through git revert marker rendered",
+      "Development loop marker rendered",
+      "Operator dry run marker rendered",
+      "Consolidated full-autonomy page marker rendered"
+    ],
+    "development_loop": [
+      "Problem/root-cause or clear goal",
+      "Research and reuse-first options",
+      "Spec and independent review",
+      "Plan and adversarial review",
+      "Implementation",
+      "Automated tests",
+      "Operator dry run as Leon",
+      "Proof, rollback anchor, and learning/requeue"
+    ],
+    "github": {
+      "branch": "smactor/bootstrap-github-backed-autonomy (planned/current packaging branch)",
+      "issue": null,
+      "pr": null,
+      "repo": "leonbreukelman/rtx3070-workshop-ops",
+      "subdirectory": "signal-hub/"
+    },
+    "governance_rule": "Priority gate first, GitHub branch/PR lifecycle second, one Candidate at a time, no public/social/spend/destructive action without Leon.",
+    "input_hash": "4757c16cffdcdbd2d1c8f3df9c0f9bffc19b3ab6b87b8fb2588e6bced7248854",
+    "last_run_at": "2026-05-16T00:35:53Z",
+    "latest_run_path": "state/smactorio/improvement_runs/smactorio-20260515T044930-18afa3e26b190ebf.json",
+    "latest_run_result": "Reviewed full-autonomy spec and adversarially reviewed implementation plan v2 are now the direction of record.",
+    "next_scheduled_run": "Existing rtx3070 Signal Hub timer can trigger the loop after the safe GitHub bootstrap Candidate lands; no duplicate Hermes cron job.",
+    "operator_dry_run": "Before a Candidate is complete, the agent must act as Leon, run the visible workflow step by step, record findings, and route blockers back through the development loop.",
+    "priority_gate": {
+      "status": "Standalone priority gate defined",
+      "summary": "Classification labels work, normalization creates Candidates, prioritization scores them, and selection chooses one safe Candidate using score, risk, dependencies, locks, and human gates."
+    },
+    "proof": [
+      "spec docs/specs/2026-05-16-smactorio-github-backed-full-autonomy-spec.md",
+      "spec review docs/verification/2026-05-16-smactorio-github-backed-full-autonomy-spec-opus-review.md",
+      "plan v2 docs/plans/2026-05-16-smactorio-github-backed-full-autonomy-plan-v2.md",
+      "plan review docs/verification/2026-05-16-smactorio-github-backed-full-autonomy-plan-opus-review.md"
+    ],
+    "rollback": {
+      "ref": null,
+      "summary": "Rollback through git revert on a branch + PR; append-only smactor/* tags anchor verified milestones."
+    },
+    "schema_version": 2,
+    "selected_candidate": {
+      "component_id": "smactorio-autonomy",
+      "id": "bootstrap-github-backed-smactorio-source-001",
+      "preferred_strategy": "internal_existing_private_github",
+      "priority_reason": "Selected as the bootstrap prerequisite. Runtime scoring is deliberately still pending until the Candidate model and scorer are implemented.",
+      "priority_score": null,
+      "title": "Bootstrap SmactorIO/Signal Hub source into GitHub-backed autonomy"
+    },
+    "what_is_being_improved": "SmactorIO is being upgraded from a local Improvement OS into a GitHub-backed autonomous development loop."
+  },
+  "journal": [
+    {
+      "proof": [
+        "priority gate defined",
+        "Opus spec review saved",
+        "Opus plan review saved",
+        "plan v2 saved",
+        "GitHub bootstrap Candidate selected"
+      ],
+      "summary": "Leon clarified the desired development loop. SmactorIO now has a reviewed spec and adversarially reviewed plan v2 that place prioritization as a standalone gate and use GitHub branches/PRs/reverts for version control and rollback.",
+      "title": "GitHub-backed full autonomy loop specified",
+      "when": "2026-05-16T00:35:53Z"
+    },
+    {
+      "proof": [
+        "run_id smactorio-20260515T044217-18afa37d91b3b363",
+        "input sha256 4757c16cffdc",
+        "before sha256 47f59df56743",
+        "after sha256 recorded in state/smactorio/latest_run.json",
+        "journal entry de-duplicated"
+      ],
+      "summary": "The first SmactorIO Improvement OS runner selected the cockpit visibility candidate and updated this homepage with proof and scheduler context.",
+      "title": "Improvement OS loop completed",
+      "when": "2026-05-15T04:42:17Z"
+    },
+    {
+      "proof": [
+        "HTTP 200",
+        "Navigation test passed",
+        "Secret scan clean",
+        "Browser visual QA passed"
+      ],
+      "summary": "The first project homepage template is live at /projects/smactorio/ and is linked from the dashboard and project index.",
+      "title": "SmactorIO project cockpit published",
+      "when": "2026-05-15T03:30:01Z"
+    },
+    {
+      "proof": [
+        "This homepage data file",
+        "pages.json manifest entry",
+        "Generated LAN page"
+      ],
+      "summary": "Leon confirmed that each project needs its own homepage: neat, not overwhelming, but able to reach the roadmap, contract, journal, history, current work, and proof.",
+      "title": "Project cockpit requested",
+      "when": "2026-05-15T03:24:25Z"
+    },
+    {
+      "proof": [
+        "smactorio_simple_roadmap.html"
+      ],
+      "summary": "The advanced self-improvement ideas were parked. The first priority became: one goal, one state card, one safe action, one check, one plain result.",
+      "title": "Simple automation roadmap published",
+      "when": "2026-05-15T02:37:57Z"
+    },
+    {
+      "proof": [
+        "smactorio_operating_contract.html"
+      ],
+      "summary": "The deeper operating model was turned into a visual page with diagrams and linked reference material instead of a dense chat reply.",
+      "title": "Visual operating contract published",
+      "when": "2026-05-15T01:45:42Z"
+    }
+  ],
+  "links": [
+    {
+      "href": "smactorio_simple_roadmap.html",
+      "label": "Living roadmap",
+      "purpose": "Simple automation-first roadmap and parking lot."
+    },
+    {
+      "href": "smactorio_full_autonomy.html",
+      "label": "Full autonomy control plan",
+      "purpose": "Consolidated HTML summary of the reviewed spec, plan v2, Opus reviews, FSM placement, priority gate, GitHub-backed lifecycle, and operator dry run."
+    },
+    {
+      "href": "smactorio_operating_contract.html",
+      "label": "Operating contract",
+      "purpose": "Deeper rules, FSM picture, schema idea, and risk boundary."
+    },
+    {
+      "href": "index.html",
+      "label": "Signal Hub dashboard",
+      "purpose": "Main LAN dashboard containing all visible control surfaces."
+    },
+    {
+      "href": "projects/index.html",
+      "label": "Projects index",
+      "purpose": "Index of project homepages and project-intelligence surfaces."
+    }
+  ],
+  "north_star": "Give Leon one clear place to set a goal, see the current step, approve or redirect when needed, and watch projects move forward safely.",
+  "one_line": "A private autonomous project operating system that turns goals into small verified steps.",
+  "operating_rule": "One goal. One state card. One safe action. One check. One plain result.",
+  "owner": "Leon",
+  "page_path": "projects/smactorio/index.html",
+  "parking_lot": [
+    "RICE/WSJF cockpit views after the additive score is stable",
+    "broad external source discovery",
+    "old conversation mining beyond compact redacted capsules",
+    "knowledge graph",
+    "full improvement scoreboard",
+    "auto-merge after branch protection and human policy are defined"
+  ],
+  "proof": [
+    "Homepage is generated from structured JSON so future projects can copy the same shape.",
+    "Manifest entry makes the page visible from the Signal Hub dashboard.",
+    "Navigation and secret scans are required before live publication.",
+    "Improvement OS runner records source SHA256 proof.",
+    "Existing rtx3070 timer invokes the Signal Hub operating loop; no duplicate Hermes cron job.",
+    "Priority gate, GitHub-backed loop, rollback, development loop, and operator dry-run markers are now required page contract markers.",
+    "Full-autonomy spec and plan v2 live under docs/specs, docs/plans, and docs/verification.",
+    "Normal rollback is git revert through branch + PR, not tarballs.",
+    "Consolidated full-autonomy HTML page links reviewed spec, plan v2, and Opus reviews from the cockpit."
+  ],
+  "schema_version": 1,
+  "slug": "smactorio",
+  "status": "active",
+  "template_notes": [
+    "Copy this JSON shape for the next project.",
+    "Keep the homepage short.",
+    "Put long detail in linked roadmap, contract, journal, and reference documents.",
+    "Automation should update current_step and append journal entries."
+  ],
+  "title": "SmactorIO"
+}

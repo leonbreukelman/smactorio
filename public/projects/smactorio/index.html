@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SmactorIO</title>
+<style>
+:root { color-scheme: dark; --bg:#071017; --panel:rgba(255,255,255,.075); --panel2:rgba(255,255,255,.11); --line:rgba(255,255,255,.16); --text:#eef7ff; --muted:#a8bbcf; --cyan:#69e6ff; --green:#8ef0c1; --amber:#ffd071; --rose:#ff9ab1; --violet:#c7a6ff; }
+*{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 12% -10%,rgba(105,230,255,.23),transparent 34rem),radial-gradient(circle at 88% 4%,rgba(199,166,255,.20),transparent 34rem),linear-gradient(160deg,#061019,#101827 58%,#0c121b);color:var(--text);line-height:1.55} a{color:var(--cyan);text-decoration:none} a:hover{text-decoration:underline} main{width:min(1180px,calc(100vw - 32px));margin:0 auto} .shell-hero{padding:52px 0 22px} .panel,.card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:26px;box-shadow:0 24px 70px rgba(0,0,0,.35);backdrop-filter:blur(18px)} .hero-panel,.card{padding:24px} .kicker,.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-weight:800;font-size:.76rem;color:var(--green)} h1{font-size:clamp(2.4rem,7vw,5.2rem);line-height:.94;margin:12px 0;letter-spacing:-.055em} h2{font-size:clamp(1.9rem,3.4vw,2.7rem);line-height:1.05;margin:10px 0 14px;letter-spacing:-.035em} h3{margin:0 0 10px;font-size:1.22rem} p,.muted,td,li{color:var(--muted)} section{padding:34px 0} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px} table{width:100%;border-collapse:collapse} th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top} code{color:var(--amber)}
+.shell-nav{position:sticky;top:0;z-index:20;margin:0 auto 28px;padding:12px;border-radius:999px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;background:rgba(2,6,23,.88);border:1px solid var(--line,rgba(148,163,184,.24));backdrop-filter:blur(14px)}
+.shell-nav a{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.07);color:var(--text,#e5f4ff);text-decoration:none}
+.shell-nav a.current{outline:1px solid var(--cyan,#69e6ff);color:var(--cyan,#69e6ff)}
+.page-meta{margin:0 auto 28px;padding:22px}
+.page-card code,.page-meta code{white-space:normal}
+.shell-meta{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.badge,.tag,.pill{display:inline-flex;align-items:center;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);border-radius:999px;padding:5px 9px;color:#dcecff;font-size:.84rem}
+.meta-row,.metrics,.source-health{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;margin:12px 0}
+.metric{display:inline-flex;flex-direction:column;gap:2px;min-width:92px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);border-radius:18px;padding:9px 12px;color:var(--muted,#a8bbcf)}
+.metric-value{font-weight:900;font-size:1.05rem;color:var(--text,#eef7ff);line-height:1.1}
+.metric-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted,#a8bbcf)}
+.confidence{display:inline-flex;align-items:center;border:1px solid rgba(255,208,113,.28);background:rgba(255,208,113,.09);border-radius:999px;padding:5px 9px;color:var(--amber,#ffd071);font-size:.84rem}
+.signal-summary{color:var(--text,#eef7ff)}
+.daily-brief-hero{margin-bottom:16px}
+.signal-card,.signal-contract{position:relative}
+.rank{position:absolute;right:18px;top:14px;color:var(--amber,#ffd071);font-weight:900}
+.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.lan-warning{margin-top:18px;padding:16px;border-radius:18px;border:1px solid rgba(105,230,255,.32);background:rgba(105,230,255,.08);color:var(--text,#e5f4ff)}
+.back-link{display:inline-flex;margin-bottom:14px;font-weight:800}
+.page-index{align-items:stretch}
+.footer{padding:36px 0 64px;color:var(--muted,#9fb2c7);font-size:.92rem}
+@media(max-width:900px){.shell-nav{position:static;border-radius:22px;justify-content:flex-start}}
+</style>
+
+<meta name="smactor:section" content="priority-gate">
+<meta name="smactor:section" content="github-backed-loop">
+<meta name="smactor:section" content="rollback-through-git-revert">
+<meta name="smactor:section" content="development-loop">
+<meta name="smactor:section" content="operator-dry-run">
+<style>
+.project-home{padding-top:16px}.bigline{font-size:clamp(1.25rem,2.2vw,1.9rem);font-weight:850;color:var(--text)}.northstar-card{border-color:rgba(142,240,193,.44)}.northstar{font-size:clamp(1.2rem,2vw,1.65rem);font-weight:750;color:var(--text)}.rule{display:inline-flex;margin-top:12px;border:1px solid rgba(255,208,113,.35);background:rgba(255,208,113,.08);border-radius:999px;padding:10px 14px;color:var(--amber);font-weight:850}.stepgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.step-cell{border:1px solid rgba(105,230,255,.24);background:rgba(255,255,255,.07);border-radius:22px;padding:16px}.step-cell strong{display:block;color:var(--green);text-transform:uppercase;letter-spacing:.12em;font-size:.76rem;margin-bottom:8px}.step-cell span{display:block;color:var(--text);font-size:1.04rem}.improvement-os{border-top:1px solid rgba(105,230,255,.18);border-bottom:1px solid rgba(105,230,255,.12)}.improvement-card{border-color:rgba(105,230,255,.25)}.proof-card{grid-column:1/-1}.curated-research-review{border-bottom:1px solid rgba(255,208,113,.16)}.research-review-card{border-color:rgba(255,208,113,.28);overflow-wrap:anywhere}.research-review-card code,.proposal-card-details code{white-space:normal;word-break:break-word;overflow-wrap:anywhere}.proposal-card-details li{overflow-wrap:anywhere}.research-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.research-decision-notice{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px;border:1px solid rgba(142,240,193,.3);background:rgba(142,240,193,.08);border-radius:16px;padding:10px 12px}.research-action-form{margin:0}.research-action-form button{border:1px solid rgba(105,230,255,.36);background:rgba(105,230,255,.12);color:var(--text);border-radius:999px;padding:8px 11px;font-weight:800;cursor:pointer}.review-code-input{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:.82rem}.review-code-input input{max-width:150px;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.18);color:var(--text);border-radius:999px;padding:7px 9px}.research-action-form button:hover{border-color:var(--cyan)}.link-card h3{font-size:1.34rem}.journal-card{min-height:190px}.three{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+</style>
+</head>
+<body data-signal-hub-shell="v1">
+<main>
+<header class="shell-hero" id="top">
+  <div class="panel hero-panel">
+    <a class="back-link" href="../index.html">← Back to Signal Hub dashboard</a>
+    <div class="kicker">LAN-only Signal Hub</div>
+    <h1>SmactorIO</h1>
+    <p class="muted">Project cockpit homepage for SmactorIO: current step, priority gate, GitHub-backed loop, roadmap, contract, journal, decisions, parking lot, and proof links.</p>
+    <div class="shell-meta"><span class="badge">Generated 2026-05-23T04:34:17+00:00</span><span class="badge">Shared shell</span><span class="badge">No raw agent HTML</span></div>
+    <div class="lan-warning"><strong>Private boundary:</strong> this LAN-only/private Signal Hub surface must stay off the public internet unless separately reviewed.</div>
+  </div>
+</header>
+<nav class="shell-nav" data-signal-hub-shell="global" aria-label="Signal Hub pages"><a href="../../ai_tech_signal_brief.html">AI + Tech Signal Daily Brief</a><a href="../../cmmc_guided_interviewer_as_built.html">CMMC Guided Interviewer As-Built and Functional Test Readiness</a><a href="../../claude_code_provider_bridge_hardening_spec.html">Claude Code Provider Bridge Hardening Spec</a><a href="../../claude_code_provider_bridge_implementation_plan.html">Claude Code Provider Bridge Implementation Plan</a><a href="../../index.html">Leon Signal Hub</a><a href="../../autonomy_operating_loop.html">Signal Hub Option C Operating Loop</a><a href="../signal-hub.html">Signal Hub Project Intelligence</a><a href="../../project_intelligence_roadmap.html">Signal Hub Project Intelligence Roadmap</a><a href="../index.html">Signal Hub Projects</a><a href="index.html" aria-current="page" class="current">SmactorIO</a><a href="../../smactorio_full_autonomy.html">SmactorIO Full Autonomy Control Plan</a><a href="../../smactorio_operating_contract.html">SmactorIO Operating Contract Visual</a><a href="../../smactorio_simple_roadmap.html">SmactorIO Simple Automation Roadmap</a><a href="../../cmmc_integrated_grok_guided_interviewer.html">CMMC Integrated Grok Guided Interviewer</a><a href="../../capsule_led_signal_loop.html">Capsule LED Signal Loop</a><a href="../../daedalus-input-to-print.html">Daedalus Input-to-Print</a><a href="../../hermes-tmux-workspace-resilience.html">Hermes Workspace Resilience: tmux, systemd, cron, backups</a><a href="../../rtx3070_agent_workshop.html">RTX 3070 Agent Workshop</a><a href="../../rtx3070_workshop_status.html">RTX 3070 Workshop Status</a></nav>
+<aside class="card page-meta" data-page-meta="manifest" aria-label="Page manifest metadata">
+  <div class="eyebrow">LAN-only/private Signal Hub surface · project-homepage · current</div>
+  <h2>SmactorIO</h2>
+  <p>Project cockpit homepage for SmactorIO: current step, priority gate, GitHub-backed loop, roadmap, contract, journal, decisions, parking lot, and proof links.</p>
+  <div class="shell-meta">
+    <span class="badge">Generated 2026-05-23T04:34:17+00:00</span>
+    <span class="badge">Source scripts/build_project_homepages.py</span>
+    <span class="badge">Owner SmactorIO</span>
+  </div>
+  <p class="muted">Rendered by scripts/page_shell.py for projects/smactorio/index.html from the canonical manifest.</p>
+  <details><summary>Generated from</summary><ul><li>data/project_homepages/smactorio.json</li><li>pages.json</li><li>scripts/build_project_homepages.py</li><li>docs/specs/2026-05-16-smactorio-github-backed-full-autonomy-spec.md</li><li>docs/plans/2026-05-16-smactorio-github-backed-full-autonomy-plan-v2.md</li></ul></details>
+  <div class="tags"><span class="tag">smactorio</span> <span class="tag">project-homepage</span> <span class="tag">fsm</span> <span class="tag">automation-first</span> <span class="tag">template</span> <span class="tag">priority-gate</span> <span class="tag">github-backed</span> <span class="tag">rollback</span></div>
+</aside>
+
+<section id="cockpit" class="project-home" data-project-cockpit="smactorio">
+  <div class="eyebrow">Project cockpit</div>
+  <h2>SmactorIO</h2>
+  <p class="bigline">A private autonomous project operating system that turns goals into small verified steps.</p>
+  <p>SmactorIO is the simple operating layer for Leon&#x27;s projects: set a clear goal, move through one visible step card at a time, check the proof, and keep the history in one place.</p>
+  <div class="shell-meta">
+    <span class="badge">Status active</span>
+    <span class="badge">Owner Leon</span>
+    <span class="badge">URL /projects/smactorio/</span>
+    <a class="badge" href="index.html">Project home</a>
+  </div>
+</section>
+
+<section id="north-star">
+  <article class="card northstar-card">
+    <div class="eyebrow">North Star</div>
+    <h2>Why this project exists</h2>
+    <p class="northstar">Give Leon one clear place to set a goal, see the current step, approve or redirect when needed, and watch projects move forward safely.</p>
+    <p class="rule">One goal. One state card. One safe action. One check. One plain result.</p>
+  </article>
+</section>
+
+<section id="current-step">
+  <div class="eyebrow">Current step card</div>
+  <h2>What is happening now</h2>
+  <div class="stepgrid">
+        <div class="step-cell">
+          <strong>State</strong>
+          <span>FULL_AUTONOMY_SPEC_PLAN_REVIEWED</span>
+        </div>
+
+        <div class="step-cell">
+          <strong>Input</strong>
+          <span>Leon clarified that SmactorIO needs a roadmap-consuming autonomous development loop with explicit prioritization and GitHub-backed rollback.</span>
+        </div>
+
+        <div class="step-cell">
+          <strong>Action</strong>
+          <span>Defined the priority gate, GitHub-backed lifecycle, reviewed spec, adversarially reviewed plan v2, and updated the cockpit/roadmap direction.</span>
+        </div>
+
+        <div class="step-cell">
+          <strong>Output</strong>
+          <span>SmactorIO now has a documented candidate-selection/development loop: classify -&gt; normalize -&gt; prioritize -&gt; select -&gt; spec/review -&gt; plan/review -&gt; implement -&gt; test -&gt; operator dry run -&gt; proof.</span>
+        </div>
+
+        <div class="step-cell">
+          <strong>Check</strong>
+          <span>Generated pages must expose Priority gate, GitHub-backed loop, Rollback through git revert, Development loop, and Operator dry run markers.</span>
+        </div>
+
+        <div class="step-cell">
+          <strong>Next</strong>
+          <span>Package safe Signal Hub/SmactorIO source into the private GitHub repo on branch smactor/bootstrap-github-backed-autonomy and open a PR.</span>
+        </div>
+        </div>
+</section>
+
+
+<section id="improvement-os" class="improvement-os">
+  <div class="eyebrow">Improvement OS</div>
+  <h2>SmactorIO Improvement OS</h2>
+  <div class="grid two improvement-grid">
+    <article class="card improvement-card">
+      <div class="eyebrow">What is being improved</div>
+      <h3>SmactorIO is being upgraded from a local Improvement OS into a GitHub-backed autonomous development loop.</h3>
+      <p>This section stays simple: one selected internal candidate, one result, one proof set, and the existing timer context.</p>
+    </article>
+    <article class="card improvement-card" data-candidate-id="bootstrap-github-backed-smactorio-source-001">
+      <div class="eyebrow">Selected candidate</div>
+      <h3>bootstrap-github-backed-smactorio-source-001 — Bootstrap SmactorIO/Signal Hub source into GitHub-backed autonomy</h3>
+      <p><strong>Priority score:</strong> <span data-priority-score data-empty="true">—</span></p>
+      <p>Selected as the bootstrap prerequisite. Runtime scoring is deliberately still pending until the Candidate model and scorer are implemented.</p>
+    </article>
+    <article class="card improvement-card" data-smactor-section="priority-gate">
+      <div class="eyebrow">Priority gate</div>
+      <h3>Standalone priority gate defined</h3>
+      <p>Classification labels work, normalization creates Candidates, prioritization scores them, and selection chooses one safe Candidate using score, risk, dependencies, locks, and human gates.</p>
+    </article>
+    <article class="card improvement-card" data-smactor-section="github-backed-loop">
+      <div class="eyebrow">GitHub-backed loop</div>
+      <h3>leonbreukelman/rtx3070-workshop-ops</h3>
+      <p><strong>Issue:</strong> <span data-github-issue data-empty="true">—</span></p>
+      <p><strong>Branch:</strong> <span data-github-branch>smactor/bootstrap-github-backed-autonomy (planned/current packaging branch)</span></p>
+      <p><strong>PR:</strong> <span data-github-pr data-empty="true">—</span></p>
+    </article>
+    <article class="card improvement-card">
+      <div class="eyebrow">Governance rule</div>
+      <h3>Internal-first</h3>
+      <p>Priority gate first, GitHub branch/PR lifecycle second, one Candidate at a time, no public/social/spend/destructive action without Leon.</p>
+    </article>
+    <article class="card improvement-card">
+      <div class="eyebrow">Latest improvement run</div>
+      <h3>Reviewed full-autonomy spec and adversarially reviewed implementation plan v2 are now the direction of record.</h3>
+      <p><strong>Last run time:</strong> 2026-05-16T00:35:53Z</p>
+      <p><strong>Next scheduled run:</strong> Existing rtx3070 Signal Hub timer can trigger the loop after the safe GitHub bootstrap Candidate lands; no duplicate Hermes cron job.</p>
+    </article>
+    <article class="card improvement-card" data-smactor-section="development-loop">
+      <div class="eyebrow">Development loop</div>
+      <h3>Problem → research → spec → review → plan → adversarial review → implement → test → operator dry run → proof</h3>
+      <ul><li>Problem/root-cause or clear goal</li><li>Research and reuse-first options</li><li>Spec and independent review</li><li>Plan and adversarial review</li><li>Implementation</li><li>Automated tests</li><li>Operator dry run as Leon</li><li>Proof, rollback anchor, and learning/requeue</li></ul>
+    </article>
+    <article class="card improvement-card" data-smactor-section="rollback-through-git-revert">
+      <div class="eyebrow">Rollback through git revert</div>
+      <h3>Rollback through git revert on a branch + PR; append-only smactor/* tags anchor verified milestones.</h3>
+      <p><strong>Rollback ref:</strong> <span data-rollback-ref data-empty="true">—</span></p>
+    </article>
+    <article class="card improvement-card" data-smactor-section="operator-dry-run">
+      <div class="eyebrow">Operator dry run</div>
+      <h3>Before a Candidate is complete, the agent must act as Leon, run the visible workflow step by step, record findings, and route blockers back through the development loop.</h3>
+      <p>Every completed Candidate needs a step-by-step dry run with findings routed back into the same loop.</p>
+    </article>
+    <article class="card improvement-card proof-card">
+      <div class="eyebrow">Proof</div>
+      <h3>Checks and sha256 evidence</h3>
+      <div class="tags"><span class="tag">spec docs/specs/2026-05-16-smactorio-github-backed-full-autonomy-spec.md</span><span class="tag">spec review docs/verification/2026-05-16-smactorio-github-backed-full-autonomy-spec-opus-review.md</span><span class="tag">plan v2 docs/plans/2026-05-16-smactorio-github-backed-full-autonomy-plan-v2.md</span><span class="tag">plan review docs/verification/2026-05-16-smactorio-github-backed-full-autonomy-plan-opus-review.md</span><span class="tag">Priority gate marker rendered</span><span class="tag">GitHub-backed loop marker rendered</span><span class="tag">Rollback through git revert marker rendered</span><span class="tag">Development loop marker rendered</span></div>
+    </article>
+  </div>
+</section>
+
+
+
+<section id="curated-research-review" class="curated-research-review" data-research-review="empty">
+  <div class="eyebrow">Curated research review queue</div>
+  <h2>Curated research review queue</h2>
+  <article class="card">
+    <h3>No curated research opportunities are waiting for review</h3>
+    <p>Research remains disabled by default. When safe, sanitized research opportunities are persisted, they will appear here for Leon to approve, reject, or park; approved work-candidate proposals can then be picked up by the bridge runner for RSVL-MR planning and a governed SmactorIO-ready issue ticket.</p>
+  </article>
+</section>
+
+
+<section id="current-work">
+  <div class="grid two">
+    <article class="card">
+      <div class="eyebrow">Current work</div>
+      <h2>Now</h2>
+      <ul><li>Bootstrap safe SmactorIO/Signal Hub source into the private GitHub repo without runtime state.</li><li>Use the priority gate before any Candidate enters the development loop.</li><li>Keep the cockpit simple; put detailed spec/plan/review artifacts in repo docs.</li></ul>
+    </article>
+    <article class="card">
+      <div class="eyebrow">Template rule</div>
+      <h2>How this repeats</h2>
+      <ul><li>Copy this JSON shape for the next project.</li><li>Keep the homepage short.</li><li>Put long detail in linked roadmap, contract, journal, and reference documents.</li><li>Automation should update current_step and append journal entries.</li></ul>
+    </article>
+  </div>
+</section>
+
+<section id="links">
+  <div class="eyebrow">Where to click</div>
+  <h2>Roadmap, contract, dashboard, and details</h2>
+  <div class="grid two">
+            <article class="card link-card">
+              <div class="eyebrow">Open</div>
+              <h3><a href="../../smactorio_simple_roadmap.html">Living roadmap</a></h3>
+              <p>Simple automation-first roadmap and parking lot.</p>
+            </article>
+
+            <article class="card link-card">
+              <div class="eyebrow">Open</div>
+              <h3><a href="../../smactorio_full_autonomy.html">Full autonomy control plan</a></h3>
+              <p>Consolidated HTML summary of the reviewed spec, plan v2, Opus reviews, FSM placement, priority gate, GitHub-backed lifecycle, and operator dry run.</p>
+            </article>
+
+            <article class="card link-card">
+              <div class="eyebrow">Open</div>
+              <h3><a href="../../smactorio_operating_contract.html">Operating contract</a></h3>
+              <p>Deeper rules, FSM picture, schema idea, and risk boundary.</p>
+            </article>
+
+            <article class="card link-card">
+              <div class="eyebrow">Open</div>
+              <h3><a href="../../index.html">Signal Hub dashboard</a></h3>
+              <p>Main LAN dashboard containing all visible control surfaces.</p>
+            </article>
+
+            <article class="card link-card">
+              <div class="eyebrow">Open</div>
+              <h3><a href="../index.html">Projects index</a></h3>
+              <p>Index of project homepages and project-intelligence surfaces.</p>
+            </article>
+            </div>
+</section>
+
+<section id="journal">
+  <div class="eyebrow">Journal</div>
+  <h2>Progression / history</h2>
+  <p class="muted">This is the short visible journal. Later automation should append entries here and link to the full journal when it exists.</p>
+  <div class="grid two">
+            <article class="card journal-card">
+              <div class="eyebrow">2026-05-16T00:35:53Z</div>
+              <h3>GitHub-backed full autonomy loop specified</h3>
+              <p>Leon clarified the desired development loop. SmactorIO now has a reviewed spec and adversarially reviewed plan v2 that place prioritization as a standalone gate and use GitHub branches/PRs/reverts for version control and rollback.</p>
+              <div class="tags"><span class="tag">priority gate defined</span><span class="tag">Opus spec review saved</span><span class="tag">Opus plan review saved</span><span class="tag">plan v2 saved</span><span class="tag">GitHub bootstrap Candidate selected</span></div>
+            </article>
+
+            <article class="card journal-card">
+              <div class="eyebrow">2026-05-15T04:42:17Z</div>
+              <h3>Improvement OS loop completed</h3>
+              <p>The first SmactorIO Improvement OS runner selected the cockpit visibility candidate and updated this homepage with proof and scheduler context.</p>
+              <div class="tags"><span class="tag">run_id smactorio-20260515T044217-18afa37d91b3b363</span><span class="tag">input sha256 4757c16cffdc</span><span class="tag">before sha256 47f59df56743</span><span class="tag">after sha256 recorded in state/smactorio/latest_run.json</span><span class="tag">journal entry de-duplicated</span></div>
+            </article>
+
+            <article class="card journal-card">
+              <div class="eyebrow">2026-05-15T03:30:01Z</div>
+              <h3>SmactorIO project cockpit published</h3>
+              <p>The first project homepage template is live at /projects/smactorio/ and is linked from the dashboard and project index.</p>
+              <div class="tags"><span class="tag">HTTP 200</span><span class="tag">Navigation test passed</span><span class="tag">Secret scan clean</span><span class="tag">Browser visual QA passed</span></div>
+            </article>
+
+            <article class="card journal-card">
+              <div class="eyebrow">2026-05-15T03:24:25Z</div>
+              <h3>Project cockpit requested</h3>
+              <p>Leon confirmed that each project needs its own homepage: neat, not overwhelming, but able to reach the roadmap, contract, journal, history, current work, and proof.</p>
+              <div class="tags"><span class="tag">This homepage data file</span><span class="tag">pages.json manifest entry</span><span class="tag">Generated LAN page</span></div>
+            </article>
+
+            <article class="card journal-card">
+              <div class="eyebrow">2026-05-15T02:37:57Z</div>
+              <h3>Simple automation roadmap published</h3>
+              <p>The advanced self-improvement ideas were parked. The first priority became: one goal, one state card, one safe action, one check, one plain result.</p>
+              <div class="tags"><span class="tag">smactorio_simple_roadmap.html</span></div>
+            </article>
+
+            <article class="card journal-card">
+              <div class="eyebrow">2026-05-15T01:45:42Z</div>
+              <h3>Visual operating contract published</h3>
+              <p>The deeper operating model was turned into a visual page with diagrams and linked reference material instead of a dense chat reply.</p>
+              <div class="tags"><span class="tag">smactorio_operating_contract.html</span></div>
+            </article>
+            </div>
+</section>
+
+<section id="decisions-parking-proof">
+  <div class="grid three">
+    <article class="card">
+      <div class="eyebrow">Decisions</div>
+      <h2>Settled for now</h2>
+      <ul><li>SmactorIO is the umbrella autonomous project operating system name for now.</li><li>Signal Hub remains the private LAN dashboard/control surface inside SmactorIO.</li><li>The homepage is the cockpit; the roadmap, contract, and journal hang from it.</li><li>The homepage must stay neat and link to details instead of becoming a wall of text.</li><li>The basic automation loop comes before advanced self-improvement machinery.</li><li>Prioritization is a standalone governed step between normalization and candidate selection.</li><li>GitHub Issues/branches/PRs become the canonical backlog/version-control path; tarballs are not normal rollback.</li><li>The first GitHub-backed Candidate is bootstrap-github-backed-smactorio-source-001.</li><li>Direct main pushes are not allowed for the bootstrap autonomy slice; use branch + PR.</li></ul>
+    </article>
+    <article class="card">
+      <div class="eyebrow">Parking lot</div>
+      <h2>Important, but later</h2>
+      <ul><li>RICE/WSJF cockpit views after the additive score is stable</li><li>broad external source discovery</li><li>old conversation mining beyond compact redacted capsules</li><li>knowledge graph</li><li>full improvement scoreboard</li><li>auto-merge after branch protection and human policy are defined</li></ul>
+    </article>
+    <article class="card">
+      <div class="eyebrow">Proof</div>
+      <h2>What shows this is real</h2>
+      <ul><li>Homepage is generated from structured JSON so future projects can copy the same shape.</li><li>Manifest entry makes the page visible from the Signal Hub dashboard.</li><li>Navigation and secret scans are required before live publication.</li><li>Improvement OS runner records source SHA256 proof.</li><li>Existing rtx3070 timer invokes the Signal Hub operating loop; no duplicate Hermes cron job.</li><li>Priority gate, GitHub-backed loop, rollback, development loop, and operator dry-run markers are now required page contract markers.</li><li>Full-autonomy spec and plan v2 live under docs/specs, docs/plans, and docs/verification.</li><li>Normal rollback is git revert through branch + PR, not tarballs.</li><li>Consolidated full-autonomy HTML page links reviewed spec, plan v2, and Opus reviews from the cockpit.</li></ul>
+    </article>
+  </div>
+</section>
+
+<footer class="footer">Rendered by <code>scripts/page_shell.py</code> from <code>pages.json</code>.</footer>
+</main>
+</body>
+</html>

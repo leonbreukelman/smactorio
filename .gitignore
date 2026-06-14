@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local runtime state and generated/private material
+.env
+.env.*
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+state/
+runtime/
+logs/
+cache/
+.cache/
+reports/
+
+# Local editor / OS
+.DS_Store
+.idea/
+.vscode/

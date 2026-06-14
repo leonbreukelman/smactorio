@@ -1,0 +1,13 @@
+[Unit]
+Description=Run SmactorIO Hermes Fork Sync Runtime every 15 minutes
+ConditionHost=rtx3070
+
+[Timer]
+OnBootSec=3min
+OnCalendar=*:0/15
+RandomizedDelaySec=120s
+Persistent=true
+Unit=smactorio-hermes-fork.service
+
+[Install]
+WantedBy=timers.target

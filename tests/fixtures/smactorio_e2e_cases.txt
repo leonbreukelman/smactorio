@@ -1,0 +1,1 @@
+CASE-02: normal low-risk test fixture/code change through SmactorIO.

@@ -1,0 +1,38 @@
+[Unit]
+Description=SmactorIO Hermes Fork Sync Runtime
+Documentation=https://github.com/leonbreukelman/smactorio
+ConditionHost=rtx3070
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=leonb
+Group=leonb
+WorkingDirectory=/home/leonb/projects/smactorio
+Environment=HOME=/home/leonb
+Environment=PYTHONUNBUFFERED=1
+Environment=HERMES_HOME=/home/leonb/.config/smactorio/hermes-home
+Environment=GH_CONFIG_DIR=/home/leonb/.config/smactorio/gh
+Environment=SMACTORIO_WORKER_HERMES_HOME=/home/leonb/.config/smactorio/hermes-home
+Environment=SMACTORIO_RUNTIME_ATTEST=rtx3070-smactorio-systemd
+Environment=SMACTORIO_SHARE_DIR=/home/leonb/.local/share/smactorio
+Environment=PATH=/home/leonb/.local/bin:/home/leonb/.nvm/versions/node/v24.13.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin
+EnvironmentFile=/home/leonb/.config/smactorio/env
+ExecStartPre=/home/leonb/projects/smactorio/scripts/smactorio_service_preflight.sh
+ExecStartPre=/usr/bin/mkdir -p /home/leonb/.local/state/smactorio /home/leonb/.local/share/smactorio/repos /home/leonb/.config/smactorio/hermes-home
+ExecStart=/usr/bin/flock -n /home/leonb/.local/state/smactorio/hermes-fork.lock /usr/bin/python3 /home/leonb/projects/smactorio/scripts/smactorio_issue_foreman.py --repo leonbreukelman/hermes-agent --repo-root /home/leonb/.local/share/smactorio/repos/hermes-agent --base main --state-db /home/leonb/.local/state/smactorio/hermes-fork.sqlite
+RuntimeMaxSec=7200
+TimeoutStartSec=7200
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=read-only
+InaccessiblePaths=-/home/leonb/.ssh -/home/leonb/.config/gh -/home/leonb/.git-credentials -/home/leonb/.hermes
+ReadWritePaths=/home/leonb/.local/state/smactorio /home/leonb/.local/share/smactorio /home/leonb/.cache/smactorio /home/leonb/.config/smactorio
+ReadOnlyPaths=/home/leonb/projects/rtx3070-workshop-ops /home/leonb/projects/smactorio /home/leonb/hermes /home/leonb/projects/hermes-agent
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

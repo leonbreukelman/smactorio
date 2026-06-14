@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "candidates": [
+    {
+      "id": "improve-cockpit-improvement-visibility-001",
+      "title": "Make the SmactorIO improvement loop visible on the cockpit",
+      "component_id": "smactorio-cockpit",
+      "status": "ready",
+      "created_at": "2026-05-15T00:00:00Z",
+      "preferred_strategy": "internal_existing",
+      "governance_rule": "Internal-first: use existing local source data and static pages only; no public or social account mutation.",
+      "what_is_being_improved": "SmactorIO cockpit visibility for its own improvement loop.",
+      "expected_user_value": "Leon can see what improved, the selected candidate, proof, last run, and timer context.",
+      "scores": {
+        "impact": 4,
+        "confidence": 4,
+        "reversibility": 3,
+        "dependency_unblock": 2,
+        "evidence_strength": 3,
+        "effort": 1,
+        "risk": 1,
+        "regression_surface": 1
+      },
+      "execution": {
+        "kind": "update_project_homepage",
+        "target_paths": [
+          "data/project_homepages/smactorio.json"
+        ],
+        "commands": [
+          [
+            "python3",
+            "scripts/build_project_homepages.py"
+          ],
+          [
+            "python3",
+            "scripts/scan_for_secrets.py",
+            "data/project_homepages/smactorio.json",
+            "data/smactorio",
+            "public/projects/smactorio/index.html"
+          ]
+        ]
+      }
+    }
+  ]
+}

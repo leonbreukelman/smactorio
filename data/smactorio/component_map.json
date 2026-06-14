@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "components": [
+    {
+      "id": "smactorio-cockpit",
+      "label": "SmactorIO cockpit",
+      "kind": "project_homepage",
+      "path": "data/project_homepages/smactorio.json",
+      "owner": "Leon",
+      "improvement_surface": "internal_existing",
+      "governance_rule": "Internal-first: improve existing local cockpit data before external account changes."
+    },
+    {
+      "id": "signal-hub-runner",
+      "label": "Existing Signal Hub scheduled runner",
+      "kind": "systemd_runner",
+      "path": "scripts/run_operating_loop.py",
+      "owner": "Leon",
+      "improvement_surface": "internal_existing",
+      "governance_rule": "Use the existing rtx3070 timer; do not create a duplicate Hermes cron job."
+    }
+  ]
+}

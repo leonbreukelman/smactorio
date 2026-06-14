@@ -1,0 +1,15 @@
+- CASE-01: normal docs change through SmactorIO.
+- CASE-03: generated verification command uses signal-hub/scripts/run_tests.sh.
+- CASE-04: verification command with -v remains compatible with quiet defaults.
+- CASE-05: pytest selector file.py::Class.test is documented as translatable.
+- CASE-06: directory selector verification is documented.
+- CASE-07: ambiguous multiple selectors require a clear worker-resolved fix path.
+- CASE-08: generated public drift cleanup remains safe before clean-worktree gates.
+- CASE-09: git diff --check trailing whitespace is repairable only in allowed paths.
+- CASE-10: unknown source changes must be narrowed or corrected, not silently discarded.
+- CASE-12: attempted outside-scope work is corrected into allowed Signal Hub docs scope.
+- CASE-13: guardrail failures must be classified, fixed, amended, and rerun.
+- CASE-14: reviewer comments require amendment, resolution, and merge readiness proof.
+- CASE-15: strict branch protection may require rebase or branch update before merge.
+- CASE-19: stale smactorio:blocked labels are recovered for retryable issues.
+- CASE-20: worker interruption or restart must recover without permanent claimed/blocked limbo.

@@ -1,0 +1,26 @@
+[Unit]
+Description=Publish Hermes upstream sync work for SmactorIO
+Documentation=https://github.com/leonbreukelman/smactorio
+ConditionHost=rtx3070
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/leonb/projects/smactorio
+Environment=HOME=/home/leonb
+Environment=PYTHONUNBUFFERED=1
+Environment=GH_CONFIG_DIR=/home/leonb/.config/smactorio/gh
+Environment=SMACTORIO_RUNTIME_ATTEST=rtx3070-smactorio-systemd
+Environment=PATH=/home/leonb/.local/bin:/home/leonb/.nvm/versions/node/v24.13.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin
+EnvironmentFile=/home/leonb/.config/smactorio/env
+ExecStartPre=/usr/bin/mkdir -p /home/leonb/.local/state/smactorio /home/leonb/.local/share/smactorio/fork-sync
+ExecStart=/usr/bin/python3 /home/leonb/projects/smactorio/scripts/hermes_fork_sync_check.py --json --lock-file /home/leonb/.local/state/smactorio/hermes-fork.lock
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=read-only
+InaccessiblePaths=-/home/leonb/.ssh -/home/leonb/.config/gh -/home/leonb/.git-credentials -/home/leonb/.hermes
+ReadWritePaths=/home/leonb/.local/state/smactorio /home/leonb/.local/share/smactorio/fork-sync /home/leonb/.config/smactorio /home/leonb/.cache/smactorio
+ReadOnlyPaths=/home/leonb/projects/rtx3070-workshop-ops /home/leonb/projects/smactorio /home/leonb/hermes
+StandardOutput=journal
+StandardError=journal

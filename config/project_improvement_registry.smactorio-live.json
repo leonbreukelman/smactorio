@@ -1,0 +1,162 @@
+{
+  "projects": [
+    {
+      "canonical_repo": "leonbreukelman/rtx3070-workshop-ops",
+      "default_branch": "main",
+      "enabled": true,
+      "issue_tracker": {
+        "labels_must_exist": true,
+        "repo": "leonbreukelman/rtx3070-workshop-ops",
+        "type": "github"
+      },
+      "label_mapping": {
+        "base": [
+          "smactorio",
+          "autonomy:ready"
+        ],
+        "readiness": {
+          "blocked": "smactorio:blocked",
+          "draft": "autonomy:ready",
+          "human_review": "needs-human"
+        },
+        "risk": {
+          "high": "risk:high",
+          "low": "risk:low",
+          "medium": "risk:medium",
+          "strategic": "risk:strategic"
+        },
+        "type": {
+          "docs": "type:docs",
+          "research": "type:research",
+          "research_proposal": "type:research-proposal"
+        }
+      },
+      "local_path": ".",
+      "non_goals": [
+        "Do not create branches or PRs from the processor.",
+        "Do not modify service or timer units.",
+        "Do not deploy, merge, rotate credentials, change billing, or perform destructive work."
+      ],
+      "north_star": "Turn validated Signal Hub evidence into safe GitHub issues SmactorIO can pick up.",
+      "owner": "Leon",
+      "project_id": "smactorio",
+      "publication_policy": {
+        "allow_label_creation": true,
+        "allow_project_metadata_creation": false,
+        "human_review_required_for": [
+          "public_repo",
+          "high_risk"
+        ],
+        "max_new_issues_per_run": 1,
+        "max_open_generated_issues": 10,
+        "mode": "publish_ready"
+      },
+      "redaction_policy": {
+        "max_evidence_quote_chars": 600,
+        "public_issue_body": "strict",
+        "redact_local_paths": true,
+        "redact_secret_like_values": true
+      },
+      "research_policy": {
+        "allow_network": false,
+        "allowed_hosts": [
+          "github.com",
+          "arxiv.org",
+          "openai.com",
+          "anthropic.com",
+          "deepmind.google",
+          "microsoft.com",
+          "langchain.com"
+        ],
+        "auto_issue_allowed": false,
+        "caps": {
+          "max_facets_per_run": 0,
+          "max_model_driven_cards_per_run": 0,
+          "max_options_per_card": 0,
+          "max_questions_per_facet": 0,
+          "max_search_queries_per_question": 0,
+          "max_sources_per_card": 0,
+          "max_sources_per_question": 0
+        },
+        "enabled": false,
+        "execution_tiers": [
+          "review_only"
+        ],
+        "fixtures": [],
+        "max_bytes_per_source": 65536,
+        "max_opportunities_per_run": 5,
+        "max_sources_per_run": 0,
+        "mode": "disabled",
+        "model_driven_planning": false,
+        "publish_executable_issues": false,
+        "publish_review_issues": false,
+        "review_to_work_bridge": {
+          "enabled": false,
+          "issue_ticket_bridge": {
+            "auto_publish": false,
+            "enabled": false,
+            "required_approval_mode": "work_candidate"
+          },
+          "output": "none",
+          "requires_policy_event": true
+        },
+        "sources": []
+      },
+      "risk_policy": {
+        "execution_stop_conditions": [
+          "Requires credentials, 2FA, billing changes, or admin/security approval.",
+          "Requires destructive operations or production mutations.",
+          "Requires bypassing normal SmactorIO worker issue/PR flow."
+        ],
+        "publish_blockers": [
+          "spend",
+          "2fa",
+          "destructive",
+          "credential_access",
+          "production_mutation"
+        ]
+      },
+      "source_adapters": [
+        {
+          "max_bytes_per_file": 24000,
+          "max_files": 80,
+          "roots": [
+            "README.md",
+            "signal-hub/docs",
+            "signal-hub/config",
+            "signal-hub/data/project_homepages"
+          ],
+          "type": "repo_docs"
+        },
+        {
+          "max_bytes_per_file": 24000,
+          "max_files": 120,
+          "roots": [
+            "signal-hub/scripts",
+            "signal-hub/tests",
+            "signal-hub/config"
+          ],
+          "type": "repo_code"
+        },
+        {
+          "limit": 100,
+          "states": [
+            "open",
+            "closed"
+          ],
+          "type": "github_issues"
+        }
+      ],
+      "status": "active",
+      "title": "SmactorIO",
+      "verification_defaults": [
+        "signal-hub/scripts/run_tests.sh signal-hub/tests/ -v",
+        "git diff --check",
+        "python3 signal-hub/scripts/scan_for_secrets.py signal-hub/docs signal-hub/scripts signal-hub/tests"
+      ],
+      "visibility": "private"
+    }
+  ],
+  "registry_version": "project-improvement-registry-v1",
+  "runtime_role": "live_scheduled"
+}

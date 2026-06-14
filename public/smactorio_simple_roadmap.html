@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SmactorIO Simple Automation Roadmap</title>
+<style>
+:root { color-scheme: dark; --bg:#071017; --panel:rgba(255,255,255,.075); --panel2:rgba(255,255,255,.11); --line:rgba(255,255,255,.16); --text:#eef7ff; --muted:#a8bbcf; --cyan:#69e6ff; --green:#8ef0c1; --amber:#ffd071; --rose:#ff9ab1; --violet:#c7a6ff; }
+*{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 12% -10%,rgba(105,230,255,.23),transparent 34rem),radial-gradient(circle at 88% 4%,rgba(199,166,255,.20),transparent 34rem),linear-gradient(160deg,#061019,#101827 58%,#0c121b);color:var(--text);line-height:1.55} a{color:var(--cyan);text-decoration:none} a:hover{text-decoration:underline} main{width:min(1180px,calc(100vw - 32px));margin:0 auto} .shell-hero{padding:52px 0 22px} .panel,.card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:26px;box-shadow:0 24px 70px rgba(0,0,0,.35);backdrop-filter:blur(18px)} .hero-panel,.card{padding:24px} .kicker,.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-weight:800;font-size:.76rem;color:var(--green)} h1{font-size:clamp(2.4rem,7vw,5.2rem);line-height:.94;margin:12px 0;letter-spacing:-.055em} h2{font-size:clamp(1.9rem,3.4vw,2.7rem);line-height:1.05;margin:10px 0 14px;letter-spacing:-.035em} h3{margin:0 0 10px;font-size:1.22rem} p,.muted,td,li{color:var(--muted)} section{padding:34px 0} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px} table{width:100%;border-collapse:collapse} th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top} code{color:var(--amber)}
+.shell-nav{position:sticky;top:0;z-index:20;margin:0 auto 28px;padding:12px;border-radius:999px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;background:rgba(2,6,23,.88);border:1px solid var(--line,rgba(148,163,184,.24));backdrop-filter:blur(14px)}
+.shell-nav a{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.07);color:var(--text,#e5f4ff);text-decoration:none}
+.shell-nav a.current{outline:1px solid var(--cyan,#69e6ff);color:var(--cyan,#69e6ff)}
+.page-meta{margin:0 auto 28px;padding:22px}
+.page-card code,.page-meta code{white-space:normal}
+.shell-meta{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.badge,.tag,.pill{display:inline-flex;align-items:center;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);border-radius:999px;padding:5px 9px;color:#dcecff;font-size:.84rem}
+.meta-row,.metrics,.source-health{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;margin:12px 0}
+.metric{display:inline-flex;flex-direction:column;gap:2px;min-width:92px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);border-radius:18px;padding:9px 12px;color:var(--muted,#a8bbcf)}
+.metric-value{font-weight:900;font-size:1.05rem;color:var(--text,#eef7ff);line-height:1.1}
+.metric-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted,#a8bbcf)}
+.confidence{display:inline-flex;align-items:center;border:1px solid rgba(255,208,113,.28);background:rgba(255,208,113,.09);border-radius:999px;padding:5px 9px;color:var(--amber,#ffd071);font-size:.84rem}
+.signal-summary{color:var(--text,#eef7ff)}
+.daily-brief-hero{margin-bottom:16px}
+.signal-card,.signal-contract{position:relative}
+.rank{position:absolute;right:18px;top:14px;color:var(--amber,#ffd071);font-weight:900}
+.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.lan-warning{margin-top:18px;padding:16px;border-radius:18px;border:1px solid rgba(105,230,255,.32);background:rgba(105,230,255,.08);color:var(--text,#e5f4ff)}
+.back-link{display:inline-flex;margin-bottom:14px;font-weight:800}
+.page-index{align-items:stretch}
+.footer{padding:36px 0 64px;color:var(--muted,#9fb2c7);font-size:.92rem}
+@media(max-width:900px){.shell-nav{position:static;border-radius:22px;justify-content:flex-start}}
+</style>
+<style>
+.simple-hero{padding-top:18px}.big{font-size:clamp(1.3rem,2.5vw,2rem);color:var(--text);font-weight:800}.simpleflow{width:100%;height:auto;margin-top:16px}.three{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.focuscard{min-height:190px}.focuscard h3{font-size:1.55rem}.focuscard p{font-size:1.08rem;color:var(--text)}.now{border-color:rgba(142,240,193,.45)}.next{border-color:rgba(255,208,113,.45)}.done{border-color:rgba(105,230,255,.45)}.stepgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:16px}.stepgrid div{border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:16px;background:rgba(255,255,255,.07)}.stepgrid strong{display:block;font-size:1.35rem;color:#eef7ff}.stepgrid span{display:block;color:#a8bbcf;margin-top:6px}.parking li{font-size:1.08rem;margin:8px 0}.source-note pre{white-space:pre-wrap;overflow:auto;max-height:26rem;background:rgba(0,0,0,.23);border:1px solid var(--line);border-radius:18px;padding:16px;color:#dcecff}
+</style>
+</head>
+<body data-signal-hub-shell="v1">
+<main>
+<header class="shell-hero" id="top">
+  <div class="panel hero-panel">
+    <a class="back-link" href="index.html">← Back to Signal Hub dashboard</a>
+    <div class="kicker">LAN-only Signal Hub</div>
+    <h1>SmactorIO Simple Automation Roadmap</h1>
+    <p class="muted">A simplified GitHub-backed roadmap: one goal, one priority gate, one FSM step card, one safe action, one check, one plain result.</p>
+    <div class="shell-meta"><span class="badge">Generated 2026-06-14T02:07:34+00:00</span><span class="badge">Shared shell</span><span class="badge">No raw agent HTML</span></div>
+    <div class="lan-warning"><strong>Private boundary:</strong> this LAN-only/private Signal Hub surface must stay off the public internet unless separately reviewed.</div>
+  </div>
+</header>
+<nav class="shell-nav" data-signal-hub-shell="global" aria-label="Signal Hub pages"><a href="smactorio_full_autonomy.html">SmactorIO Full Autonomy Control Plan</a><a href="smactorio_operating_contract.html">SmactorIO Operating Contract Visual</a><a href="projects/smactorio/index.html">SmactorIO Project Cockpit</a><a href="smactorio_simple_roadmap.html" aria-current="page" class="current">SmactorIO Simple Automation Roadmap</a></nav>
+<aside class="card page-meta" data-page-meta="manifest" aria-label="Page manifest metadata">
+  <div class="eyebrow">LAN-only/private Signal Hub surface · roadmap · current</div>
+  <h2>SmactorIO Simple Automation Roadmap</h2>
+  <p>A simplified GitHub-backed roadmap: one goal, one priority gate, one FSM step card, one safe action, one check, one plain result.</p>
+  <div class="shell-meta">
+    <span class="badge">Generated 2026-06-14T02:07:34+00:00</span>
+    <span class="badge">Source scripts/build_smactorio_simple_roadmap_page.py</span>
+    <span class="badge">Owner SmactorIO</span>
+  </div>
+  <p class="muted">Rendered by scripts/page_shell.py for smactorio_simple_roadmap.html from the canonical manifest.</p>
+  <details><summary>Generated from</summary><ul><li>docs/plans/2026-05-15-smactorio-simple-automation-roadmap.md</li><li>pages.json</li><li>docs/specs/2026-05-16-smactorio-github-backed-full-autonomy-spec.md</li><li>docs/plans/2026-05-16-smactorio-github-backed-full-autonomy-plan-v2.md</li></ul></details>
+  <div class="tags"><span class="tag">smactorio</span> <span class="tag">automation-first</span> <span class="tag">fsm</span> <span class="tag">simple-roadmap</span> <span class="tag">priority-gate</span> <span class="tag">github-backed</span> <span class="tag">rollback</span></div>
+</aside>
+
+<section id="simple-first" class="simple-hero">
+  <div class="eyebrow">SmactorIO reset</div>
+  <h2>First: make the GitHub-backed automation work.</h2>
+  <p class="big">One goal. One priority gate. One state card. One safe action. One check. One plain result.</p>
+
+    <svg class="simpleflow" viewBox="0 0 1040 205" role="img" aria-label="Simple SmactorIO automation flow">
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z" fill="#ffd071"/>
+        </marker>
+      </defs>
+      <rect x="1" y="1" width="1038" height="203" rx="26" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.16)"/>
+
+            <g>
+              <rect x="28" y="42" width="130" height="112" rx="20" fill="#10233a" stroke="#69e6ff" stroke-width="2"/>
+              <circle cx="56" cy="72" r="18" fill="#8ef0c1"/>
+              <text x="56" y="78" text-anchor="middle" font-size="18" font-weight="900" fill="#061019">1</text>
+              <text x="93" y="104" text-anchor="middle" font-size="18" font-weight="900" fill="#eef7ff">GOAL</text>
+              <text x="93" y="131" text-anchor="middle" font-size="12" fill="#a8bbcf">What do we want?</text>
+            </g>
+
+            <g>
+              <rect x="194" y="42" width="130" height="112" rx="20" fill="#10233a" stroke="#69e6ff" stroke-width="2"/>
+              <circle cx="222" cy="72" r="18" fill="#8ef0c1"/>
+              <text x="222" y="78" text-anchor="middle" font-size="18" font-weight="900" fill="#061019">2</text>
+              <text x="259" y="104" text-anchor="middle" font-size="18" font-weight="900" fill="#eef7ff">PRIORITY</text>
+              <text x="259" y="131" text-anchor="middle" font-size="12" fill="#a8bbcf">Which safe Candidate?</text>
+            </g>
+
+            <g>
+              <rect x="360" y="42" width="130" height="112" rx="20" fill="#10233a" stroke="#69e6ff" stroke-width="2"/>
+              <circle cx="388" cy="72" r="18" fill="#8ef0c1"/>
+              <text x="388" y="78" text-anchor="middle" font-size="18" font-weight="900" fill="#061019">3</text>
+              <text x="425" y="104" text-anchor="middle" font-size="18" font-weight="900" fill="#eef7ff">STATE</text>
+              <text x="425" y="131" text-anchor="middle" font-size="12" fill="#a8bbcf">Where are we?</text>
+            </g>
+
+            <g>
+              <rect x="526" y="42" width="130" height="112" rx="20" fill="#10233a" stroke="#69e6ff" stroke-width="2"/>
+              <circle cx="554" cy="72" r="18" fill="#8ef0c1"/>
+              <text x="554" y="78" text-anchor="middle" font-size="18" font-weight="900" fill="#061019">4</text>
+              <text x="591" y="104" text-anchor="middle" font-size="18" font-weight="900" fill="#eef7ff">DO</text>
+              <text x="591" y="131" text-anchor="middle" font-size="12" fill="#a8bbcf">One safe action</text>
+            </g>
+
+            <g>
+              <rect x="692" y="42" width="130" height="112" rx="20" fill="#10233a" stroke="#69e6ff" stroke-width="2"/>
+              <circle cx="720" cy="72" r="18" fill="#8ef0c1"/>
+              <text x="720" y="78" text-anchor="middle" font-size="18" font-weight="900" fill="#061019">5</text>
+              <text x="757" y="104" text-anchor="middle" font-size="18" font-weight="900" fill="#eef7ff">CHECK</text>
+              <text x="757" y="131" text-anchor="middle" font-size="12" fill="#a8bbcf">Did it work?</text>
+            </g>
+
+            <g>
+              <rect x="858" y="42" width="130" height="112" rx="20" fill="#10233a" stroke="#69e6ff" stroke-width="2"/>
+              <circle cx="886" cy="72" r="18" fill="#8ef0c1"/>
+              <text x="886" y="78" text-anchor="middle" font-size="18" font-weight="900" fill="#061019">6</text>
+              <text x="923" y="104" text-anchor="middle" font-size="18" font-weight="900" fill="#eef7ff">SHOW</text>
+              <text x="923" y="131" text-anchor="middle" font-size="12" fill="#a8bbcf">Plain result + rollback</text>
+            </g>
+
+      <path d="M 164 98 L 186 98" stroke="#ffd071" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/><path d="M 330 98 L 352 98" stroke="#ffd071" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/><path d="M 496 98 L 518 98" stroke="#ffd071" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/><path d="M 662 98 L 684 98" stroke="#ffd071" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/><path d="M 828 98 L 850 98" stroke="#ffd071" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/>
+      <text x="520" y="184" text-anchor="middle" font-size="15" fill="#ffd071">Repeat only after the check and rollback path are clear.</text>
+    </svg>
+
+</section>
+
+<section id="now-next-done">
+  <div class="grid three">
+    <article class="card focuscard now"><div class="eyebrow">Now</div><h3>Bootstrap GitHub backing</h3><p>SmactorIO packages safe Signal Hub source into the private GitHub repo.</p></article>
+    <article class="card focuscard next"><div class="eyebrow">Next tiny step</div><h3>Use the Priority gate</h3><p>Classification labels work; prioritization scores it; selection picks one safe Candidate.</p></article>
+    <article class="card focuscard done"><div class="eyebrow">Done looks like</div><h3>Rollback is obvious</h3><p>The page shows the branch/PR/proof and says how to rollback through git revert.</p></article>
+  </div>
+</section>
+
+<section id="github-backed-loop">
+  <div class="grid three">
+    <article class="card focuscard"><div class="eyebrow">Priority gate</div><h3>Standalone step</h3><p>Priority is not hidden inside classification. It sits between normalization and candidate selection.</p></article>
+    <article class="card focuscard"><div class="eyebrow">GitHub-backed loop</div><h3>Issue → branch → PR</h3><p>GitHub becomes the audit trail for roadmap items, decisions, commits, reviews, and proof.</p></article>
+    <article class="card focuscard"><div class="eyebrow">Rollback through git revert</div><h3>No tarball versioning</h3><p>Normal rollback is a revert branch/PR plus a proof note and reopened Candidate issue.</p></article>
+  </div>
+</section>
+
+<section id="consolidated-plan-link">
+  <article class="card focuscard">
+    <div class="eyebrow">Consolidated HTML</div>
+    <h2><a href="smactorio_full_autonomy.html">Full autonomy control plan</a></h2>
+    <p>The reviewed spec, plan v2, Opus reviews, FSM placement, priority model, GitHub lifecycle, and operator dry-run contract are consolidated on one HTML page so this roadmap can stay simple.</p>
+  </article>
+</section>
+
+<section id="development-loop">
+  <article class="card">
+    <div class="eyebrow">Development loop</div>
+    <h2>One selected Candidate goes through the governed loop</h2>
+    <ol>
+      <li>Problem or root cause.</li>
+      <li>Research and reuse-first options.</li>
+      <li>Spec and independent review.</li>
+      <li>Plan and adversarial review.</li>
+      <li>Implement and run automated tests.</li>
+      <li>Operator dry run as Leon.</li>
+      <li>Proof, rollback anchor, and learning/requeue.</li>
+    </ol>
+  </article>
+</section>
+
+<section id="one-card-rule">
+  <article class="card">
+    <div class="eyebrow">One-card rule</div>
+    <h2>Every FSM step must fit here</h2>
+    <div class="stepgrid">
+      <div><strong>State</strong><span>Where are we?</span></div>
+      <div><strong>Input</strong><span>What came in?</span></div>
+      <div><strong>Action</strong><span>What will be done?</span></div>
+      <div><strong>Output</strong><span>What changed?</span></div>
+      <div><strong>Check</strong><span>How do we know?</span></div>
+      <div><strong>Next</strong><span>Where now?</span></div>
+    </div>
+  </article>
+</section>
+
+<section id="parking-lot">
+  <article class="card parking">
+    <div class="eyebrow">Roadmap parking lot</div>
+    <h2>Important, but later</h2>
+    <p>These ideas are not cancelled. They are parked until the simple automation loop works.</p>
+    <ul>
+      <li>self-improvement flywheel</li>
+      <li>RICE/WSJF views after the additive Priority gate works</li>
+      <li>many source discovery mechanisms</li>
+      <li>long project intelligence graphs</li>
+      <li>old conversation extraction</li>
+      <li>full improvement scoreboard</li>
+      <li>auto-merge after branch protection and human policy are defined</li>
+    </ul>
+  </article>
+</section>
+
+<section id="source-note">
+  <article class="card source-note">
+    <div class="eyebrow">Source note</div>
+    <h2>The written roadmap is intentionally short</h2>
+    <pre># SmactorIO Simple Automation Roadmap
+
+Status: active reset, updated for GitHub-backed autonomy on 2026-05-16
+
+## Plain promise
+
+Keep SmactorIO simple.
+
+It should help Leon move one project forward, one small verified step at a time.
+
+No big theory first. No developer wall of text first. The simple view stays on top; deeper autonomy details live behind the cockpit.
+
+## What we do first
+
+First we make the automation loop work.
+
+The first useful loop is:
+
+1. Goal: what do we want?
+2. State card: where are we?
+3. Priority gate: which one safe Candidate should run next?
+4. Action: do one safe thing.
+5. Check: did it work?
+6. Show: explain the result and rollback path in plain English.
+
+That is it.
+
+## The simple FSM card
+
+Every step should fit on one card:
+
+- State: where are we?
+- Input: what came in?
+- Action: what will be done?
+- Output: what changed?
+- Check: how do we know it worked?
+- Next: where do we go now?
+
+## Current priority
+
+Build the first GitHub-backed automation path that can run without a long explanation.
+
+Current Candidate:
+
+- `bootstrap-github-backed-smactorio-source-001`
+- Purpose: put safe SmactorIO/Signal Hub source into the private GitHub repo without runtime state.
+- Backing repo: `leonbreukelman/rtx3070-workshop-ops`, under `signal-hub/`.
+- Rollback: branch + PR + git revert, not tarballs.
+- Consolidated HTML: `smactorio_full_autonomy.html` holds the reviewed spec/plan/FSM details so this roadmap can stay simple.
+
+## The development loop
+
+Once a Candidate is selected, the work loop is:
+
+1. Problem or root cause.
+2. Research and reuse-first options.
+3. Spec.
+4. Independent spec review.
+5. Plan.
+6. Adversarial plan review.
+7. Implement.
+8. Automated tests.
+9. Operator dry run as Leon.
+10. Proof and handoff.
+
+If the dry run finds a blocker, it goes back through the loop instead of being hidden.
+
+## What moves to later
+
+These are still valuable, but they are not first:
+
+- RICE/WSJF views after the simple additive score works
+- broad external source discovery
+- many source discovery mechanisms
+- long project intelligence graphs
+- complex extraction from old conversations
+- full improvement scoreboard
+- auto-merge after branch protection and human policy are defined
+
+They go on the roadmap parking lot until the basic GitHub-backed loop works.
+
+## Rule for future pages
+
+Show the simple view first.
+
+Advanced details can exist, but they must sit behind the simple view.
+
+The top of every SmactorIO page should answer:
+
+- What are we doing now?
+- What is the next tiny step?
+- Why was this Candidate chosen?
+- What does done look like?
+- What GitHub branch/issue/PR backs it?
+- How would rollback happen?
+</pre>
+  </article>
+</section>
+
+<footer class="footer">Rendered by <code>scripts/page_shell.py</code> from <code>pages.json</code>.</footer>
+</main>
+</body>
+</html>

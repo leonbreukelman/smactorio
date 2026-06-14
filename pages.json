@@ -1,0 +1,79 @@
+{
+  "site": {
+    "title": "SmactorIO",
+    "boundary": "Private SmactorIO control surface",
+    "canonical_lan_url": "http://192.168.30.10:8765/",
+    "manifest_version": 1
+  },
+  "pages": [
+    {
+      "path": "smactorio_simple_roadmap.html",
+      "title": "SmactorIO Simple Automation Roadmap",
+      "summary": "A simplified GitHub-backed roadmap: one goal, one priority gate, one FSM step card, one safe action, one check, one plain result.",
+      "type": "roadmap",
+      "status": "current",
+      "nav_visible": true,
+      "source_script": "scripts/build_smactorio_simple_roadmap_page.py",
+      "parent": "",
+      "tags": ["smactorio", "automation-first", "fsm", "simple-roadmap", "priority-gate", "github-backed", "rollback"],
+      "generated_from": [
+        "docs/plans/2026-05-15-smactorio-simple-automation-roadmap.md",
+        "pages.json",
+        "docs/specs/2026-05-16-smactorio-github-backed-full-autonomy-spec.md",
+        "docs/plans/2026-05-16-smactorio-github-backed-full-autonomy-plan-v2.md"
+      ],
+      "owner": "SmactorIO"
+    },
+    {
+      "path": "smactorio_full_autonomy.html",
+      "title": "SmactorIO Full Autonomy Control Plan",
+      "summary": "Consolidated HTML surface for the reviewed SmactorIO full-autonomy spec, plan v2, Opus reviews, FSM placement, priority gate, GitHub-backed lifecycle, and operator dry run.",
+      "type": "control-plan",
+      "status": "current",
+      "nav_visible": true,
+      "source_script": "scripts/build_smactorio_full_autonomy_page.py",
+      "parent": "smactorio_simple_roadmap.html",
+      "tags": ["smactorio", "autonomy", "fsm", "priority-gate", "github-backed", "development-loop", "reviewed-plan"],
+      "generated_from": [
+        "docs/specs/2026-05-16-smactorio-github-backed-full-autonomy-spec.md",
+        "docs/plans/2026-05-16-smactorio-github-backed-full-autonomy-plan-v2.md",
+        "docs/verification/2026-05-16-smactorio-github-backed-full-autonomy-spec-opus-review.md",
+        "docs/verification/2026-05-16-smactorio-github-backed-full-autonomy-plan-opus-review.md",
+        "docs/plans/2026-05-15-smactorio-simple-automation-roadmap.md",
+        "pages.json"
+      ],
+      "owner": "SmactorIO"
+    },
+    {
+      "path": "smactorio_operating_contract.html",
+      "title": "SmactorIO Operating Contract Visual",
+      "summary": "Visual control surface for the SmactorIO autonomous project operating system: goal loop, FSM states, typed envelopes, prompt contracts, and risk scoring.",
+      "type": "control-surface",
+      "status": "current",
+      "nav_visible": true,
+      "source_script": "scripts/build_smactorio_operating_contract_page.py",
+      "parent": "smactorio_simple_roadmap.html",
+      "tags": ["smactorio", "fsm", "schemas", "operating-contract"],
+      "generated_from": [
+        "docs/status/2026-05-15-smactorio-visual-operating-contract.md",
+        "docs/contracts/2026-05-15-smactorio-autonomy-contract.md",
+        "docs/walkthroughs/2026-05-15-smactorio-fsm-track-001.md",
+        "pages.json"
+      ],
+      "owner": "SmactorIO"
+    },
+    {
+      "path": "projects/smactorio/index.html",
+      "title": "SmactorIO Project Cockpit",
+      "summary": "Project cockpit homepage for SmactorIO: current step, priority gate, GitHub-backed loop, roadmap, contract, journal, decisions, parking lot, and proof links.",
+      "type": "project-homepage",
+      "status": "current",
+      "nav_visible": true,
+      "source_script": "scripts/build_project_homepages.py",
+      "parent": "smactorio_simple_roadmap.html",
+      "tags": ["smactorio", "project-homepage", "fsm", "automation-first", "priority-gate", "github-backed"],
+      "generated_from": ["data/project_homepages/smactorio.json", "pages.json"],
+      "owner": "SmactorIO"
+    }
+  ]
+}
