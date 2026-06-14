@@ -90,6 +90,8 @@ FORBIDDEN_SUFFIXES = (
 )
 
 SAFE_DATA_PREFIXES = (
+    "data/project_homepages/",
+    "data/smactorio/",
     "signal-hub/data/project_homepages/",
     "signal-hub/data/smactorio/",
 )

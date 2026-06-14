@@ -90,9 +90,10 @@ jobs:
           --allow-prefix public/
           --allow-prefix scripts/
           --allow-prefix tests/
-          --allow-path .gitignore
-          --allow-path pyproject.toml
-          --allow-path README.md
+          --allow-prefix .gitignore
+          --allow-prefix pages.json
+          --allow-prefix pyproject.toml
+          --allow-prefix README.md
 
       - name: Scan safe SmactorIO source paths for secrets
         shell: bash
